@@ -1,0 +1,185 @@
+/* General */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    text-align: left;
+}
+
+/* Contenedor centrado */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Título */
+h1 {
+    width: 100%;
+    text-align: center;
+    color: #2C3E50;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+h1::before {
+    content: '';
+    width: 100px;
+    height: 5px;
+    background-color: #E67E22;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Formulario */
+form {
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px; /* Ajustar el tamaño máximo del formulario */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    margin-top: 30px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label, input, textarea, select {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+input, textarea, select {
+    padding: 14px;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+button, input[type="submit"] {
+    background-color: #E67E22;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    align-self: flex-start;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #D35400;
+    transform: translateY(-2px);
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ecf0f1;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #2C3E50;
+    color: white;
+    text-transform: uppercase;
+}
+
+td input[type="text"], td select, td textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Cuadros de imágenes */
+.image-upload {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Asegura que los recuadros no se desborden */
+    margin-top: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.image-upload div {
+    flex: 1 1 calc(50% - 20px); /* Dos columnas, con un pequeño margen entre ellas */
+    max-width: 100%; /* Asegurar que no se extiendan fuera del contenedor */
+    padding: 20px;
+    border: 2px dashed #2C3E50;
+    border-radius: 10px;
+    margin: 10px 0;
+    text-align: center;
+    background-color: #f0f3f4;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.image-upload div:hover {
+    background-color: #e0e7ea;
+    border-color: #2980b9;
+}
+
+.image-upload div label {
+    display: block;
+    font-weight: bold;
+    color: #2C3E50;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.image-upload img {
+    max-width: 100%;
+    height: auto;
+    margin: 15px auto;
+    border-radius: 8px;
+    display: none;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .image-upload div {
+        flex: 1 1 100%; /* Recuadros a 100% en pantallas pequeñas */
+    }
+}
