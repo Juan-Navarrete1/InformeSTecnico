@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Navegación Moderno</title>
+    <style>
+        /* Asegura que la imagen de fondo cubra toda la página */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            background-image: url('fondo.jpg'); /* La imagen de fondo */
+            background-size: cover; /* La imagen cubre todo el fondo */
+            background-position: center;
+            background-attachment: fixed; /* Fija el fondo al viewport */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #2C3E50;
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #34495E;
+        }
+
+        .main-content {
+            padding: 40px;
+            min-height: 100vh; /* Asegura que el contenido ocupe al menos toda la altura de la pantalla */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Centramos las tarjetas horizontalmente */
+            max-width: 1200px; /* Limitar el ancho del contenedor para que quede más simétrico */
+            margin: 0 auto; /* Centrar el contenedor en la página */
+        }
+
+        .card {
+            background: #fff;
+            padding: 30px;
+            margin: 10px; /* Reducir el margen entre las tarjetas */
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            flex: 0 1 calc(33.333% - 20px); /* Ocupan un tercio del espacio */
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .card p, .card ul {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        iframe {
+            width: 100%;
+            height: 85vh;
+            border: none;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Modal (Ventana emergente) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            height: 90%;
+            max-height: 100%; /* Asegura que no supere la altura de la pantalla */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            top: 5%; /* Ajuste para centrar más el modal en móviles */
+            overflow-y: auto; /* Añade scroll vertical si el contenido es mayor que la pantalla */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Media query para pantallas más pequeñas */
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+                flex-direction: column; /* Cambiamos la dirección del flex para que las tarjetas se apilen */
+            }
+
+            .card {
+                padding: 20px;
+                flex: 0 1 100%; /* Las tarjetas ocuparán todo el ancho en pantallas pequeñas */
+                margin: 10px 0; /* Ajustamos el margen para que las tarjetas no se superpongan */
+            }
+
+            iframe {
+                height: 70vh; /* Ajustamos el alto del iframe en móviles para evitar que ocupe demasiado espacio */
+            }
+
+            .navbar {
+                flex-direction: column; /* Cambiar la barra de navegación a vertical en pantallas pequeñas */
+            }
+
+            .navbar a {
+                padding: 15px; /* Aumentar el tamaño de los enlaces en móviles */
+            }
+
+            /* Ajustamos el modal para pantallas más pequeñas */
+            .modal-content {
+                width: 100%; /* El modal ocupa todo el ancho en móviles */
+                height: 100%; /* El modal ocupa todo el alto en móviles */
+                top: 0; /* Sin margen superior */
+                padding: 15px; /* Reducimos el padding para ajustar mejor */
+                border-radius: 0; /* Sin bordes redondeados en móviles */
+                overflow-y: scroll; /* Permitir desplazamiento si el contenido es largo */
+            }
+        }
+
+        /* Ajuste para pantallas muy pequeñas */
+        @media screen and (max-width: 480px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+                margin: 5px 0;
+            }
+
+            iframe {
+                height: 60vh; /* Aún más pequeño en pantallas muy pequeñas */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de navegación horizontal -->
+    <div class="navbar">
+        <a href="#" id="informeMantenimiento">Informe Plan de Mantención</a>
+        <a href="#" id="infoEmergencia">Informe Emergencia</a>
+        <a href="#">Otro Enlace</a>
+        <a href="#">Configuración</a>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="card">
+            <h3>Notificaciones</h3>
+            <ul>
+                <li>El informe de emergencia ha sido actualizado.</li>
+                <li>Requiere revisión de la máquina X en planta Y.</li>
+                <li>Nuevo informe de mantenimiento disponible.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Últimas Actualizaciones</h3>
+            <p>Aquí podrás ver las actualizaciones más recientes del sistema y cualquier cambio importante en los informes.</p>
+        </div>
+
+        <div class="card">
+            <h3>Próximas Tareas</h3>
+            <ul>
+                <li>Revisión del Informe de Mantenimiento - Fecha límite: 22/10/2024</li>
+                <li>Actualizar el informe de emergencia - Fecha límite: 25/10/2024</li>
+                <li>Inspección de seguridad en planta Z - Fecha límite: 28/10/2024</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Actualización Rápida</h3>
+            <form>
+                <label for="informe">Actualizar Informe:</label>
+                <input type="text" id="informe" name="informe" placeholder="Nombre del informe">
+                <br>
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="en_proceso">En Proceso</option>
+                    <option value="completado">Completado</option>
+                </select>
+                <br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Progreso del Mantenimiento</h3>
+            <canvas id="progresoMantenimiento"></canvas>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            var ctx = document.getElementById('progresoMantenimiento').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Tarea 1', 'Tarea 2', 'Tarea 3', 'Tarea 4'],
+                    datasets: [{
+                        label: '% Completado',
+                        data: [80, 60, 90, 70],
+                        backgroundColor: ['#1abc9c', '#3498db', '#e74c3c', '#9b59b6']
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <div class="card">
+            <h3>Calendario de Actividades</h3>
+            <div id="calendar"></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet"/>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: [
+                        { title: 'Revisión', start: '2024-10-22' },
+                        { title: 'Mantenimiento', start: '2024-10-25' },
+                        { title: 'Inspección', start: '2024-10-28' }
+                    ]
+                });
+                calendar.render();
+            });
+        </script>
+
+        <div class="card">
+            <h3>Ubicación de Plantas</h3>
+            <div id="mapa" style="height: 400px;"></div>
+        </div>
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <script>
+            var map = L.map('mapa').setView([51.505, -0.09], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data © OpenStreetMap contributors'
+            }).addTo(map);
+        </script>
+
+        <div class="card">
+            <h3>Enlaces Rápidos</h3>
+            <ul>
+                <li><a href="informe_mantenimiento.html">Informe de Mantenimiento</a></li>
+                <li><a href="emergencia.html">Plan de Emergencia</a></li>
+                <li><a href="configuracion.html">Configuración del Sistema</a></li>
+            </ul>
+        </div>
+        
+        <!-- Contenedor para cargar la página -->
+        <iframe id="contenidoIframe" src=""></iframe>
+    </div>
+
+    <!-- Modal para mostrar el iframe -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <iframe id="iframeContent" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function openModal(src) {
+            document.getElementById("iframeContent").src = src;
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+            document.getElementById("iframeContent").src = "";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                document.getElementById("iframeContent").src = "";
+            }
+        }
+
+        document.getElementById("informeMantenimiento").addEventListener("click", function() {
+            openModal("informe.html");
+        });
+
+        document.getElementById("infoEmergencia").addEventListener("click", function() {
+            openModal("infoemergencia.html");
+        });
+    </script>
+
+</body>
+</html>
