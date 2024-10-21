@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario para PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* General */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff76;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            text-align: left;
+        }
+
+        /* Contenedor centrado */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 30px;
+        }
+
+        /* Título */
+        h1 {
+            width: 100%;
+            text-align: center;
+            color: #2C3E50;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        h1::before {
+            content: '';
+            width: 100px;
+            height: 5px;
+            background-color: #E67E22;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Formulario */
+        form {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 30px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label, input, textarea, select {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        input, textarea, select {
+            padding: 14px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        button, input[type="submit"] {
+            background-color: #E67E22;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            align-self: flex-start;
+        }
+
+        button:hover, input[type="submit"]:hover {
+            background-color: #D35400;
+            transform: translateY(-2px);
+        }
+
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ecf0f1;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #2C3E50;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        td input[type="text"], td select, td textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            font-size: 14px;
+            background-color: #fff;
+        }
+
+        table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Cuadros de imágenes */
+        .image-upload {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 30px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .image-upload div {
+            flex: 1 1 calc(50% - 20px);
+            max-width: 100%;
+            padding: 20px;
+            border: 2px dashed #2C3E50;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            background-color: #f0f3f4;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .image-upload div:hover {
+            background-color: #e0e7ea;
+            border-color: #2980b9;
+        }
+
+        .image-upload div label {
+            display: block;
+            font-weight: bold;
+            color: #2C3E50;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .image-upload img {
+            max-width: 100%;
+            height: auto;
+            margin: 15px auto;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .image-upload div {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Formulario para PDF</h1>
+    <form id="pdfForm">
+        <label for="nombre_informe">Nombre del Informe:</label>
+        <input type="text" id="nombre_informe" name="nombre_informe" required>
+
+        <label for="solicitud">Solicitud:</label>
+        <input type="text" id="solicitud" name="solicitud" required>
+
+        <label for="planta">Planta:</label>
+        <select id="planta" name="planta" required>
+            <option value="">Seleccione una opción</option>
+            <option value="Planta 1">Planta 1</option>
+            <option value="Planta 2">Planta 2</option>
+        </select>
+
+        <label for="maquina">Máquina:</label>
+        <input type="text" id="maquina" name="maquina" required>
+
+        <label for="numero_serie">N.º de Serie:</label>
+        <input type="text" id="numero_serie" name="numero_serie" required>
+
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca" required>
+
+        <label for="año">Año:</label>
+        <input type="text" id="año" name="año" required>
+
+        <label for="diagnostico">Diagnóstico:</label>
+        <textarea id="diagnostico" name="diagnostico" rows="4" required></textarea>
+
+        <label for="trabajo">Trabajo Desarrollado:</label>
+        <textarea id="trabajo" name="trabajo" rows="4" required></textarea>
+
+        <h2>Registro Fotográfico</h2>
+        <div class="image-upload">
+            <div>
+                <label for="imagen1">Imagen 1:</label>
+                <input type="file" id="imagen1" name="imagen1" accept="image/*" onchange="previewImage(event, 'preview1')">
+                <img id="preview1" alt="Previsualización">
+                <input type="text" id="texto_imagen1" placeholder="Texto para la Imagen 1">
+            </div>
+            <div>
+                <label for="imagen2">Imagen 2:</label>
+                <input type="file" id="imagen2" name="imagen2" accept="image/*" onchange="previewImage(event, 'preview2')">
+                <img id="preview2" alt="Previsualización">
+                <input type="text" id="texto_imagen2" placeholder="Texto para la Imagen 2">
+            </div>
+            <div>
+                <label for="imagen3">Imagen 3:</label>
+                <input type="file" id="imagen3" name="imagen3" accept="image/*" onchange="previewImage(event, 'preview3')">
+                <img id="preview3" alt="Previsualización">
+                <input type="text" id="texto_imagen3" placeholder="Texto para la Imagen 3">
+            </div>
+            <div>
+                <label for="imagen4">Imagen 4:</label>
+                <input type="file" id="imagen4" name="imagen4" accept="image/*" onchange="previewImage(event, 'preview4')">
+                <img id="preview4" alt="Previsualización">
+                <input type="text" id="texto_imagen4" placeholder="Texto para la Imagen 4">
+            </div>
+        </div>
+
+        <button type="button" id="generarPDF">Generar PDF</button>
+    </form>
+</div>
+
+<script>
+    function previewImage(event, previewId) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById(previewId);
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    document.getElementById("generarPDF").addEventListener("click", function() {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        // Página 1 - Datos del Informe
+        pdf.setFontSize(16);
+        pdf.text("Informe Técnico", pdf.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+        pdf.setFontSize(12);
+        pdf.text(`Nombre del Informe: ${document.getElementById("nombre_informe").value}`, 10, 40);
+        pdf.text(`Solicitud: ${document.getElementById("solicitud").value}`, 10, 50);
+        pdf.text(`Planta: ${document.getElementById("planta").value}`, 10, 60);
+        pdf.text(`Máquina: ${document.getElementById("maquina").value}`, 10, 70);
+        pdf.text(`N.º de Serie: ${document.getElementById("numero_serie").value}`, 10, 80);
+        pdf.text(`Marca: ${document.getElementById("marca").value}`, 10, 90);
+        pdf.text(`Año: ${document.getElementById("año").value}`, 10, 100);
+        pdf.text(`Diagnóstico: ${document.getElementById("diagnostico").value}`, 10, 110);
+        pdf.text(`Trabajo Desarrollado: ${document.getElementById("trabajo").value}`, 10, 120);
+
+        // Nueva página - Registro Fotográfico
+        pdf.addPage();
+        pdf.setFontSize(16);
+        pdf.text("Registro Fotográfico", pdf.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+
+        const imagenes = [
+            { img: document.getElementById("imagen1"), texto: document.getElementById("texto_imagen1").value },
+            { img: document.getElementById("imagen2"), texto: document.getElementById("texto_imagen2").value },
+            { img: document.getElementById("imagen3"), texto: document.getElementById("texto_imagen3").value },
+            { img: document.getElementById("imagen4"), texto: document.getElementById("texto_imagen4").value }
+        ];
+
+        let x = 10;
+        let y = 40;
+        let width = 80;
+        let height = 60;
+
+        function addImageToPDF(imagen, x, y, width, height, texto, callback) {
+            if (imagen.files.length > 0) {
+                const file = imagen.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        pdf.setDrawColor(0, 255, 0);
+                        pdf.setLineWidth(2);
+                        pdf.rect(x, y, width, height); // Borde verde
+                        pdf.addImage(img, 'JPEG', x + 5, y + 5, width - 10, height - 10); // Añadir imagen centrada
+                        pdf.text(texto, x + width / 2, y + height + 10, { align: 'center' });
+                        callback();
+                    };
+                };
+                reader.readAsDataURL(file);
+            } else {
+                callback();
+            }
+        }
+
+        let i = 0;
+        function processNextImage() {
+            if (i < imagenes.length) {
+                const imgData = imagenes[i];
+                addImageToPDF(imgData.img, x, y, width, height, imgData.texto, function() {
+                    i++;
+                    if (i % 2 === 0) {
+                        y += height + 20; // Nueva fila después de dos imágenes
+                        x = 10; // Reiniciar x para la siguiente fila
+                    } else {
+                        x += width + 10; // Siguiente imagen en la misma fila
+                    }
+                    processNextImage(); // Llamar a la siguiente imagen
+                });
+            } else {
+                pdf.save("informe_servicio.pdf");
+            }
+        }
+
+        processNextImage();
+    });
+</script>
+
+</body>
+</html>
